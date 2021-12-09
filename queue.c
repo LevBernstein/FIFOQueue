@@ -6,14 +6,14 @@
 // Lev Bernstein
 // 12/01/21
 
-struct qNode {
+typedef struct qNode {
 	int data;
 	struct qNode *next;
-};
+} Node;
 
-void enqueue(struct qNode **head, int data) {
-	struct qNode *newNode = malloc(sizeof(struct qNode));
-	struct qNode *walkingNode = *head;
+void enqueue(Node **head, int data) {
+	Node *newNode = malloc(sizeof(Node));
+	Node *walkingNode = *head;
 	newNode->data = data;
 	newNode->next = NULL;
 	while (walkingNode->next != NULL) {
@@ -23,22 +23,22 @@ void enqueue(struct qNode **head, int data) {
 	return;
 }
 
-int dequeue(struct qNode **head) {
+int dequeue(Node **head) {
 	if ((*head)->next == NULL) return -1;
-	struct qNode *poppedNode = (*head)->next;
+	Node *poppedNode = (*head)->next;
 	(*head)->next = poppedNode->next;
 	int poppedData = poppedNode->data;
 	free(poppedNode);
 	return poppedData;
 }
 
-void printQueue(struct qNode *head) {
-	struct qNode *current = head->next;
+void printQueue(Node *head) {
+	Node *walkingNode = head->next;
 	printf("Queue contents: ");
-	while (current != NULL) {
-		printf("%d", current->data);
-		current = current->next;
-		if (current != NULL) {
+	while (walkingNode != NULL) {
+		printf("%d", walkingNode->data);
+		walkingNode = walkingNode->next;
+		if (walkingNode != NULL) {
 			printf(", ");
 		}
 	}
@@ -46,9 +46,7 @@ void printQueue(struct qNode *head) {
 }
 
 int main() {
-	struct qNode *head = malloc(sizeof(struct qNode));
-	head->next = NULL;
-	int data;
+	Node *head = malloc(sizeof(Node));
 
 	enqueue(&head, 547548);
 	enqueue(&head, 347437);
@@ -60,11 +58,9 @@ int main() {
 	printQueue(head);
 
 	while (head->next != NULL) {
-		data = dequeue(&head);
-		printf("Dequeued %d\n", data);
+		printf("Dequeued %d\n", dequeue(&head));
 		printQueue(head);
 	}
-
 
 	return 0;
 }
